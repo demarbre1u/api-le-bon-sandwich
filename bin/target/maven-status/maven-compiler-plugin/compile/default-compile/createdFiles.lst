@@ -1,0 +1,7 @@
+org/lpro/boundary/CategorieResource.class
+org/lpro/entity/Categorie.class
+com/airhacks/JAXRSConfiguration.class
+org/lpro/boundary/CategorieManager.class
+org/lpro/boundary/CategorieNotFoundMapper.class
+org/lpro/boundary/ValidationMapper.class
+org/lpro/boundary/CategorieNotFound.class
