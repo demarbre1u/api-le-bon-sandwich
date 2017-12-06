@@ -21,7 +21,7 @@ mvn clean install
 
 Une fois notre fichier généré, il faut le déplacer dans le bon dossier de sorte que WildFly puisse le déployer.
 
-Il fois ceci fait, il ne reste plus qu'à tester !
+Une fois ceci fait, il ne reste plus qu'à tester !
 
 ## Les fonctionnalités disponibles
 
