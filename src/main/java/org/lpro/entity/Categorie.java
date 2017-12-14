@@ -1,9 +1,13 @@
 package org.lpro.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,6 +27,9 @@ public class Categorie implements Serializable
     private String nom;
     @NotNull
     private String description;
+    @ManyToMany
+    @JoinTable(name="categorie_sandwich")
+    private Set<Sandwich> sandwich = new HashSet<Sandwich>();
 
     public Categorie() {}
 
@@ -31,6 +38,7 @@ public class Categorie implements Serializable
         this.id = id;
         this.nom = nom;
         this.description = description;
+        this.sandwich = new HashSet<>();
     }
 
     public long getId() 
@@ -61,5 +69,15 @@ public class Categorie implements Serializable
     public void setDescription(String description) 
     {
         this.description = description;
+    }
+
+    public Set<Sandwich> getSandwich() 
+    {
+        return sandwich;
+    }
+
+    public void setSandwich(Set<Sandwich> sandwich) 
+    {
+        this.sandwich = sandwich;
     }
 }

@@ -23,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import org.lpro.entity.Categorie;
 import org.lpro.entity.Sandwich;
 
 @Stateless
@@ -78,11 +79,38 @@ public class SandwichResource
     public Response getOneSandwich(@PathParam("id") long id, @Context UriInfo uriInfo) 
     {
         return Optional.ofNullable(sm.findById(id))
-                .map(s -> Response.ok(s).build())
+                .map(s -> Response.ok(buildJsonSandwich(s)).build())
                 .orElseThrow(() -> new SandwichNotFound("Ressource non disponible " + uriInfo.getPath()));
     }
 
-    @POST
+    private Object buildJsonSandwich(Sandwich s) 
+    {
+        JsonArrayBuilder categs = Json.createArrayBuilder();
+        s.getCategorie().forEach( c ->
+        {
+            categs.add(buildJsonCategs(c));
+        });
+
+        return Json.createObjectBuilder()
+            .add("id", s.getId())
+            .add("nom", s.getNom())
+            .add("desc", s.getDescription())
+            .add("type_pain", s.getType())
+            .add("img", s.getImg())
+            .add("categories", categs.build())
+            .build();
+	}
+
+    private JsonValue buildJsonCategs(Categorie c) 
+    {
+        return Json.createObjectBuilder()
+            .add("id", c.getId())
+            .add("nom", c.getNom())
+            .add("desc", c.getDescription())
+            .build();
+	}
+
+	@POST
     public Response newSandwich(@Valid Sandwich s, @Context UriInfo uriInfo)
     {
         Sandwich newOne = sm.save(s);

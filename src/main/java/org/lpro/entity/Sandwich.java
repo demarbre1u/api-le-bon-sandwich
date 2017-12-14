@@ -1,15 +1,23 @@
 package org.lpro.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.json.JsonObject;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * Pour se connecter à la base de données PgSQL
+ * sudo docker run -v $PWD:/docker-entrypoint-initdb.d -it --rm --net=dockerlpro_lpronet lpro/pg11 psql -h db -U td1
+ */
 
 @Entity
 @XmlRootElement
@@ -26,6 +34,8 @@ public class Sandwich implements Serializable
     @NotNull
     private String type_pain;
     private String img;
+    @ManyToMany(mappedBy="sandwich")
+    private Set<Categorie> categorie = new HashSet<Categorie>();
 
     public Sandwich() {}
 
@@ -50,7 +60,7 @@ public class Sandwich implements Serializable
 
     public String getImg() 
     {
-        return img;
+        return img == null ? JsonObject.NULL.toString() : img;
     }
 
     public String getNom() 
@@ -86,5 +96,15 @@ public class Sandwich implements Serializable
     public void setType(String type) 
     {
         this.type_pain = type;
+    }
+
+    public Set<Categorie> getCategorie() 
+    {
+        return categorie;
+    }
+
+    public void setCategorie(Set<Categorie> categorie) 
+    {
+        this.categorie = categorie;
     }
 }

@@ -7,9 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import org.lpro.entity.Categorie;
 
 @Stateless
+@Transactional
 public class CategorieManager 
 {    
     @PersistenceContext 
