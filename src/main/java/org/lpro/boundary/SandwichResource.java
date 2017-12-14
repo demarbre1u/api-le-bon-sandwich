@@ -35,6 +35,12 @@ public class SandwichResource
     @Inject 
     SandwichManager sm;
 
+    @Inject 
+    CategorieManager cm;
+
+    @Context
+    UriInfo uriInfo;
+
     @GET
     public Response getSandwichs(@QueryParam("type") String ptype, 
                                 @QueryParam("img") String img,
@@ -83,7 +89,53 @@ public class SandwichResource
                 .orElseThrow(() -> new SandwichNotFound("Ressource non disponible " + uriInfo.getPath()));
     }
 
-    private Object buildJsonSandwich(Sandwich s) 
+    @GET
+    @Path("{id}/categories")
+    public Response getCategoriesBySandwich(@PathParam("id") long id)
+    {
+        return Optional.ofNullable(sm.findById(id))
+            .map(s -> Response.ok(buildCategoryToSandwich(s)).build())
+            .orElseThrow( () -> new SandwichNotFound("Ressource non disponible " + uriInfo.getPath()));
+    }
+
+    private JsonObject buildCategoryToSandwich(Sandwich s)
+    {
+        JsonArrayBuilder jab = Json.createArrayBuilder();
+        s.getCategorie().forEach( c ->
+        {
+            jab.add(buildJsonForCategory(c));
+        });
+
+        return Json.createObjectBuilder()
+            .add("categories", jab.build())
+            .build();
+    }
+
+    private JsonValue buildJsonForCategory(Categorie c) 
+    {
+        String uriCategory = uriInfo.getBaseUriBuilder()
+            .path(CategorieResource.class)
+            .path(c.getId() + "")
+            .build()
+            .toString();
+
+        JsonObject job = Json.createObjectBuilder()
+            .add("href", uriCategory)
+            .add("rel", "self")
+            .build();
+        
+        JsonArrayBuilder links = Json.createArrayBuilder();
+        links.add(job);
+
+        return Json.createObjectBuilder()
+            .add("id", c.getId())
+            .add("nom", c.getNom())
+            .add("desc", c.getDescription())
+            .add("links", links)
+            .build();
+	}
+
+	private Object buildJsonSandwich(Sandwich s) 
     {
         JsonArrayBuilder categs = Json.createArrayBuilder();
         s.getCategorie().forEach( c ->

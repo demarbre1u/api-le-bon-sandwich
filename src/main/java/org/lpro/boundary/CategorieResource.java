@@ -159,6 +159,7 @@ public class CategorieResource
         {
             jab.add(buildJsonForSandwich(s));
         });
+        
         return Json.createObjectBuilder()
                 .add("sandwichs", jab.build())
                 .build();
