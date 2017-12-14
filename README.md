@@ -9,7 +9,7 @@ Ce projet regroupe Les TD 1 à 4 du cours de programmation Web/Server de la LP C
 Pour faire fonctionner le projet, il faut d'abord cloner le projet :
 
 ```
-git@github.com:demarbre1u/API-LeBonSandwich.git
+git clone git@github.com:demarbre1u/API-LeBonSandwich.git
 ```
 
 Une fois le projet cloné, on se déplace dans le repertoire, puis on construit notre fichier `.war` :
