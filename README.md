@@ -37,6 +37,8 @@ Modifier une catégorie : localhost:8080/projet/api/categories/1 (PUT)
 
 Supprimer une catégorie : localhost:8080/projet/api/categories/1 (DELETE)
 
+Liste des sandwichs d'une catégorie : localhost:8080/projet/api/categories/1/sandwichs (GET)
+
 ### Les sandwichs
 
 Liste des sandwichs : localhost:8080/projet/api/sandwichs (GET)
@@ -60,3 +62,5 @@ Changer de page : localhost:8080/projet/api/sandwichs?page=2 (GET)
 Changer de taille : localhost:8080/projet/api/sandwichs&size=50 (GET)
 
 Changer de taille ET de page : localhost:8080/projet/api/sandwichs?page=2&size=50 (GET)
+
+Liste des catégories d'un sandwich : localhost:8080/projet/api/sandwichs/1/categories (GET)
