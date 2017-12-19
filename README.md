@@ -8,13 +8,13 @@ Ce projet regroupe Les TD 1 à 4 du cours de programmation Web/Server de la LP C
 
 Pour faire fonctionner le projet, il faut d'abord cloner le projet :
 
-```
+```bash
 git clone git@github.com:demarbre1u/API-LeBonSandwich.git
 ```
 
 Une fois le projet cloné, on se déplace dans le repertoire, puis on construit notre fichier `.war` :
 
-```
+```bash
 cd API-LeBonSandwich/
 mvn clean install
 ```
@@ -64,3 +64,9 @@ Changer de taille : localhost:8080/projet/api/sandwichs&size=50 (GET)
 Changer de taille ET de page : localhost:8080/projet/api/sandwichs?page=2&size=50 (GET)
 
 Liste des catégories d'un sandwich : localhost:8080/projet/api/sandwichs/1/categories (GET)
+
+### Les commandes
+
+Créer une commande : localhost:8080/projet/api/commandes/ (POST)
+
+Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU__ localhost:8080/projet/api/commandes/id avec X-lbs-token=token dans le Header de la requête (GET)
