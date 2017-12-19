@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -150,10 +151,25 @@ public class SandwichResource
             .add("type_pain", s.getType())
             .add("img", s.getImg())
             .add("categories", categs.build())
+            .add("links", buildHATEOSLinks(s))
             .build();
 	}
 
-    private JsonValue buildJsonCategs(Categorie c) 
+    private JsonValue buildHATEOSLinks(Sandwich s) 
+    {
+        JsonObjectBuilder categs = Json.createObjectBuilder()
+            .add("href", uriInfo.getPath() + "/categories/");
+
+        JsonObjectBuilder tailles = Json.createObjectBuilder()
+            .add("href", uriInfo.getPath() + "/tailles/");
+
+        return Json.createObjectBuilder()
+            .add("categories", categs.build())
+            .add("tailles", tailles.build())
+            .build();
+	}
+
+	private JsonValue buildJsonCategs(Categorie c) 
     {
         return Json.createObjectBuilder()
             .add("id", c.getId())
