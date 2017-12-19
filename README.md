@@ -8,13 +8,13 @@ Ce projet regroupe Les TD 1 à 4 du cours de programmation Web/Server de la LP C
 
 Pour faire fonctionner le projet, il faut d'abord cloner le projet :
 
-```
+```bash
 git clone git@github.com:demarbre1u/API-LeBonSandwich.git
 ```
 
 Une fois le projet cloné, on se déplace dans le repertoire, puis on construit notre fichier `.war` :
 
-```
+```bash
 cd API-LeBonSandwich/
 mvn clean install
 ```
@@ -27,40 +27,46 @@ Une fois ceci fait, il ne reste plus qu'à tester !
 
 ### Les catégories
 
-Liste des catégories : localhost:8080/projet/api/categories (GET)
+__Liste des catégories__ : localhost:8080/projet/api/categories (GET)
 
-Voir une catégorie : localhost:8080/projet/api/categories/1 (GET)
+__Voir une catégorie__ : localhost:8080/projet/api/categories/1 (GET)
 
-Ajouter une catégorie : localhost:8080/projet/api/categories (POST)
+__Ajouter une catégorie__ : localhost:8080/projet/api/categories (POST)
 
-Modifier une catégorie : localhost:8080/projet/api/categories/1 (PUT)
+__Modifier une catégorie__ : localhost:8080/projet/api/categories/1 (PUT)
 
-Supprimer une catégorie : localhost:8080/projet/api/categories/1 (DELETE)
+__Supprimer une catégorie__ : localhost:8080/projet/api/categories/1 (DELETE)
 
-Liste des sandwichs d'une catégorie : localhost:8080/projet/api/categories/1/sandwichs (GET)
+__Liste des sandwichs d'une catégorie__ : localhost:8080/projet/api/categories/1/sandwichs (GET)
 
 ### Les sandwichs
 
-Liste des sandwichs : localhost:8080/projet/api/sandwichs (GET)
+__Liste des sandwichs__ : localhost:8080/projet/api/sandwichs (GET)
 
-Voir un sandwich : localhost:8080/projet/api/sandwichs/1 (GET)
+__Voir un sandwich__ : localhost:8080/projet/api/sandwichs/1 (GET)
 
-Ajouter un sandwich : localhost:8080/projet/api/sandwichs (POST)
+__Ajouter un sandwich__ : localhost:8080/projet/api/sandwichs (POST)
 
-Modifier un sandwich : localhost:8080/projet/api/sandwichs/1 (PUT)
+__Modifier un sandwich__ : localhost:8080/projet/api/sandwichs/1 (PUT)
 
-Supprimer un sandwich : localhost:8080/projet/api/sandwichs/1 (DELETE)
+__Supprimer un sandwich__ : localhost:8080/projet/api/sandwichs/1 (DELETE)
 
-Filtrer par type de pain : localhost:8080/projet/api/sandwichs?type=baguette (GET)
+__Filtrer par type de pain__ : localhost:8080/projet/api/sandwichs?type=baguette (GET)
 
-Filtrer par image : localhost:8080/projet/api/sandwichs?img=1 (GET)
+__Filtrer par image__ : localhost:8080/projet/api/sandwichs?img=1 (GET)
 
-Filtrer par type de pain ET image : localhost:8080/projet/api/sandwichs?type=baguette&img=1 (GET)
+__Filtrer par type de pain ET image__ : localhost:8080/projet/api/sandwichs?type=baguette&img=1 (GET)
 
-Changer de page : localhost:8080/projet/api/sandwichs?page=2 (GET)
+__Changer de page__ : localhost:8080/projet/api/sandwichs?page=2 (GET)
 
-Changer de taille : localhost:8080/projet/api/sandwichs&size=50 (GET)
+__Changer de taille__ : localhost:8080/projet/api/sandwichs&size=50 (GET)
 
-Changer de taille ET de page : localhost:8080/projet/api/sandwichs?page=2&size=50 (GET)
+__Changer de taille ET de page__ : localhost:8080/projet/api/sandwichs?page=2&size=50 (GET)
 
-Liste des catégories d'un sandwich : localhost:8080/projet/api/sandwichs/1/categories (GET)
+__Liste des catégories d'un sandwich__ : localhost:8080/projet/api/sandwichs/1/categories (GET)
+
+### Les commandes
+
+__Créer une commande__ : localhost:8080/projet/api/commandes/ (POST)
+
+__Consulter une commande__ : localhost:8080/projet/api/commandes/id?token=token __OU__ localhost:8080/projet/api/commandes/id avec X-lbs-token=token dans le Header de la requête (GET)
