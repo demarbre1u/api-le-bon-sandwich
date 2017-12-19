@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Pour se connecter à la base de données PgSQL
+ * 
  * sudo docker run -v $PWD:/docker-entrypoint-initdb.d -it --rm --net=dockerlpro_lpronet lpro/pg11 psql -h db -U td1
  */
 
