@@ -37,6 +37,8 @@ public class Sandwich implements Serializable
     private String img;
     @ManyToMany(mappedBy="sandwich")
     private Set<Categorie> categorie = new HashSet<Categorie>();
+    @ManyToMany(mappedBy="sandwich")
+    private Set<Tailles> tailles = new HashSet<Tailles>();
 
     public Sandwich() {}
 
@@ -47,8 +49,20 @@ public class Sandwich implements Serializable
         this.description = desc;
         this.type_pain = type;
         this.img = img;
+        this.categorie = new HashSet<>();
+        this.tailles = new HashSet<>();
     }
     
+    public Set<Tailles> getTailles() 
+    {
+        return tailles;
+    }
+
+    public void setTailles(Set<Tailles> tailles) 
+    {
+        this.tailles = tailles;
+    }
+
     public long getId() 
     {
         return id;

@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.lpro.entity.Categorie;
 import org.lpro.entity.Sandwich;
+import org.lpro.entity.Tailles;
 
 @Stateless
 @Path("sandwichs")
@@ -99,6 +100,18 @@ public class SandwichResource
             .orElseThrow( () -> new SandwichNotFound("Ressource non disponible " + uriInfo.getPath()));
     }
 
+    /*
+
+    TODO
+    
+    @GET
+    @Path("{id}/tailles")
+    public Response getTaillesBySandwich(@PathParam("id") long id)
+    {
+
+    }
+    */
+
     private JsonObject buildCategoryToSandwich(Sandwich s)
     {
         JsonArrayBuilder jab = Json.createArrayBuilder();
@@ -144,6 +157,12 @@ public class SandwichResource
             categs.add(buildJsonCategs(c));
         });
 
+        JsonArrayBuilder tailles = Json.createArrayBuilder();
+        s.getTailles().forEach( t -> 
+        {
+            tailles.add(buildJsonTailles(t));
+        });
+
         return Json.createObjectBuilder()
             .add("id", s.getId())
             .add("nom", s.getNom())
@@ -151,11 +170,12 @@ public class SandwichResource
             .add("type_pain", s.getType())
             .add("img", s.getImg())
             .add("categories", categs.build())
+            .add("tailles", tailles.build())
             .add("links", buildHATEOSLinks(s))
             .build();
 	}
 
-    private JsonValue buildHATEOSLinks(Sandwich s) 
+	private JsonValue buildHATEOSLinks(Sandwich s) 
     {
         JsonObjectBuilder categs = Json.createObjectBuilder()
             .add("href", uriInfo.getPath() + "/categories/");
@@ -175,6 +195,15 @@ public class SandwichResource
             .add("id", c.getId())
             .add("nom", c.getNom())
             .add("desc", c.getDescription())
+            .build();
+    }
+    
+    private JsonValue buildJsonTailles(Tailles t) 
+    {
+        return Json.createObjectBuilder()
+            .add("id", t.getId())
+            .add("nom", t.getNom())
+            .add("prix", t.getPrix())
             .build();
 	}
 
