@@ -27,46 +27,46 @@ Une fois ceci fait, il ne reste plus qu'à tester !
 
 ### Les catégories
 
-__Liste des catégories__ : localhost:8080/projet/api/categories (GET)
+Liste des catégories : localhost:8080/projet/api/categories (GET)
 
-__Voir une catégorie__ : localhost:8080/projet/api/categories/1 (GET)
+Voir une catégorie : localhost:8080/projet/api/categories/1 (GET)
 
-__Ajouter une catégorie__ : localhost:8080/projet/api/categories (POST)
+Ajouter une catégorie : localhost:8080/projet/api/categories (POST)
 
-__Modifier une catégorie__ : localhost:8080/projet/api/categories/1 (PUT)
+Modifier une catégorie : localhost:8080/projet/api/categories/1 (PUT)
 
-__Supprimer une catégorie__ : localhost:8080/projet/api/categories/1 (DELETE)
+Supprimer une catégorie : localhost:8080/projet/api/categories/1 (DELETE)
 
-__Liste des sandwichs d'une catégorie__ : localhost:8080/projet/api/categories/1/sandwichs (GET)
+Liste des sandwichs d'une catégorie : localhost:8080/projet/api/categories/1/sandwichs (GET)
 
 ### Les sandwichs
 
-__Liste des sandwichs__ : localhost:8080/projet/api/sandwichs (GET)
+Liste des sandwichs : localhost:8080/projet/api/sandwichs (GET)
 
-__Voir un sandwich__ : localhost:8080/projet/api/sandwichs/1 (GET)
+Voir un sandwich : localhost:8080/projet/api/sandwichs/1 (GET)
 
-__Ajouter un sandwich__ : localhost:8080/projet/api/sandwichs (POST)
+Ajouter un sandwich : localhost:8080/projet/api/sandwichs (POST)
 
-__Modifier un sandwich__ : localhost:8080/projet/api/sandwichs/1 (PUT)
+Modifier un sandwich : localhost:8080/projet/api/sandwichs/1 (PUT)
 
-__Supprimer un sandwich__ : localhost:8080/projet/api/sandwichs/1 (DELETE)
+Supprimer un sandwich : localhost:8080/projet/api/sandwichs/1 (DELETE)
 
-__Filtrer par type de pain__ : localhost:8080/projet/api/sandwichs?type=baguette (GET)
+Filtrer par type de pain : localhost:8080/projet/api/sandwichs?type=baguette (GET)
 
-__Filtrer par image__ : localhost:8080/projet/api/sandwichs?img=1 (GET)
+Filtrer par image : localhost:8080/projet/api/sandwichs?img=1 (GET)
 
-__Filtrer par type de pain ET image__ : localhost:8080/projet/api/sandwichs?type=baguette&img=1 (GET)
+Filtrer par type de pain ET image : localhost:8080/projet/api/sandwichs?type=baguette&img=1 (GET)
 
-__Changer de page__ : localhost:8080/projet/api/sandwichs?page=2 (GET)
+Changer de page : localhost:8080/projet/api/sandwichs?page=2 (GET)
 
-__Changer de taille__ : localhost:8080/projet/api/sandwichs&size=50 (GET)
+Changer de taille : localhost:8080/projet/api/sandwichs&size=50 (GET)
 
-__Changer de taille ET de page__ : localhost:8080/projet/api/sandwichs?page=2&size=50 (GET)
+Changer de taille ET de page : localhost:8080/projet/api/sandwichs?page=2&size=50 (GET)
 
-__Liste des catégories d'un sandwich__ : localhost:8080/projet/api/sandwichs/1/categories (GET)
+Liste des catégories d'un sandwich : localhost:8080/projet/api/sandwichs/1/categories (GET)
 
 ### Les commandes
 
-__Créer une commande__ : localhost:8080/projet/api/commandes/ (POST)
+Créer une commande : localhost:8080/projet/api/commandes/ (POST)
 
-__Consulter une commande__ : localhost:8080/projet/api/commandes/id?token=token __OU__ localhost:8080/projet/api/commandes/id avec X-lbs-token=token dans le Header de la requête (GET)
+Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU__ localhost:8080/projet/api/commandes/id avec X-lbs-token=token dans le Header de la requête (GET)
