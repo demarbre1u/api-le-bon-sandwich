@@ -239,17 +239,51 @@ public class SandwichResource
      * 
      *********************************************************************/
 
-    /*
-
-    TODO
-    
     @GET
     @Path("{id}/tailles")
     public Response getTaillesBySandwich(@PathParam("id") long id)
     {
-
+        return Optional.ofNullable(sm.findById(id))
+            .map(s -> Response.ok(buildTailleBySandwich(s)).build())
+            .orElseThrow(() -> new SandwichNotFound("Ressource non disponible " + uriInfo.getPath()));
     }
-    */
+
+    private JsonObject buildTailleBySandwich(Sandwich s)
+    {
+        JsonArrayBuilder jab = Json.createArrayBuilder();
+        s.getTailles().forEach(t ->
+        {
+            jab.add(buildJsonForTaille(t));
+        });
+
+        return Json.createObjectBuilder()
+            .add("tailles", jab.build())
+            .build();
+    }
+
+    private JsonValue buildJsonForTaille(Tailles t)
+    {
+        String uriTailles = uriInfo.getBaseUriBuilder()
+            .path(TailleResource.class)
+            .path(t.getId() + "")
+            .build()
+            .toString();
+        
+        JsonObject job = Json.createObjectBuilder()
+            .add("href", uriTailles)
+            .add("rel", "self")
+            .build();
+
+        JsonArrayBuilder links = Json.createArrayBuilder();
+        links.add(job);
+
+        return Json.createObjectBuilder()
+            .add("id", t.getId())
+            .add("nom", t.getNom())
+            .add("prix", t.getPrix())
+            .add("links", links)
+            .build();
+    }
 
     /*********************************************************************
      * 
