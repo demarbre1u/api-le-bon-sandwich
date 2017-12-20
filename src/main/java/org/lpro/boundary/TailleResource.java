@@ -2,6 +2,7 @@ package org.lpro.boundary;
 
 import java.net.URI;
 import java.util.Optional;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -22,92 +23,91 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import org.lpro.entity.Categorie;
 import org.lpro.entity.Sandwich;
-
+import org.lpro.entity.Tailles;
 
 @Stateless
-@Path("categories")
+@Path("tailles")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CategorieResource 
-{    
-    @Inject
-    CategorieManager cm;
+public class TailleResource
+{
+    @Inject 
+    TailleManager tm;
 
-    @Inject
-    SandwichManager sm;
-
-    @Context 
+    @Context
     UriInfo uriInfo;
-    
+
     /*********************************************************************
      * 
-     * Route permettant de récupérer la liste des catégories
+     * Route permettant de récupérer la liste des tailles
      * 
      *********************************************************************/
     
-    @GET
-    public Response getCategories() 
-    {
-        JsonObject json = Json.createObjectBuilder()
-                .add("type", "collection")
-                .add("categories", getCategorieList())
-                .build();
-        return Response.ok(json).build();
-    }
+     @GET
+     public Response getTailles()
+     {
+         JsonObject json = Json.createObjectBuilder()
+            .add("type", "collection")
+            .add("tailles", getTaillesList())
+            .build();
 
-    private JsonArray getCategorieList() 
+        return Response.ok(json).build();
+     }
+
+    private JsonArray getTaillesList() 
     {
         JsonArrayBuilder jab = Json.createArrayBuilder();
-        this.cm.findAll().forEach((c) -> {
-            jab.add(buildJson(c));
+        this.tm.findAll().forEach( t ->
+        {
+            jab.add(buildJson(t));
         });
-        return jab.build();
-    }
 
-    private JsonObject buildJson(Categorie c) 
+		return jab.build();
+	}
+
+    private JsonValue buildJson(Tailles t) 
     {
         return Json.createObjectBuilder()
-                .add("id",c.getId())
-                .add("nom", c.getNom())
-                .add("desc", c.getDescription())
-                .build();
-    }
-    
-    /*********************************************************************
-     * 
-     * Route permettant de récupérer les détails d'une catégorie
-     * 
-     *********************************************************************/
-
-    @GET
-    @Path("{id}")
-    public Response getOneCategorie(@PathParam("id") long id) 
-    {
-        return Optional.ofNullable(cm.findById(id))
-                .map(c -> Response.ok(buildCategorieObject(c)).build())
-                .orElseThrow(() -> new CategorieNotFound("Ressource non disponible "+ uriInfo.getPath()));
-    }
-
-    private JsonObject buildCategorieObject(Categorie c) 
-    {
-        return Json.createObjectBuilder()
-            .add("categorie", buildJsonForCategorie(c))
+            .add("id", t.getId())
+            .add("nom", t.getNom())
+            .add("prix", t.getPrix())
             .build();
 	}
 
-    private JsonValue buildJsonForCategorie(Categorie c) 
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer une taille
+     * 
+     *********************************************************************/
+    
+     @GET
+     @Path("{id}")
+     public Response getOneTaille(@PathParam("id") long id )
+     {
+         return Optional.ofNullable(tm.findById(id))
+            .map(t -> Response.ok(buildTailleObject(t)).build())
+            .orElseThrow(() -> new TailleNotFound("Ressource non disponible " + uriInfo.getPath()));
+     }
+
+    private Object buildTailleObject(Tailles t) 
+    {
+        return Json.createObjectBuilder()
+            .add("taille", buildJsonForTaille(t))
+            .build();
+	}
+
+    private JsonValue buildJsonForTaille(Tailles t) 
     {
         String uriSelf = uriInfo.getBaseUriBuilder()
-            .path(CategorieResource.class)
-            .path(c.getId() + "")
+            .path(TailleResource.class)
+            .path(t.getId() + "")
             .build()
             .toString();
 
         String uriSandwichs = uriInfo.getBaseUriBuilder()
-            .path(CategorieResource.class)
-            .path(c.getId() + "")
+            .path(TailleResource.class)
+            .path(t.getId() + "")
             .path(SandwichResource.class)
             .build()
             .toString();
@@ -117,21 +117,21 @@ public class CategorieResource
         links.add(buildJsonSandwichUri(uriSandwichs));
 
         JsonArrayBuilder sandwichs = Json.createArrayBuilder();
-        c.getSandwich().forEach( s ->
+        t.getSandwichs().forEach( s ->
         {
-            sandwichs.add(buildJsonForSandwich(s));
+            sandwichs.add(buildJsonForSandwichs(s));
         });
 
         return Json.createObjectBuilder()
-            .add("id", c.getId())
-            .add("nom", c.getNom())
-            .add("desc", c.getDescription())
-            .add("sandwichs", sandwichs.build())
+            .add("id", t.getId())
+            .add("nom", t.getNom())
+            .add("prix", t.getPrix())
+            .add("sandwichs", sandwichs)
             .add("links", links)
             .build();
 	}
 
-    private JsonValue buildJsonSandwichUri(String uriSandwichs) 
+	private JsonValue buildJsonSandwichUri(String uriSandwichs) 
     {
         return Json.createObjectBuilder()
             .add("href", uriSandwichs)
@@ -139,27 +139,30 @@ public class CategorieResource
             .build();
 	}
 
-	private JsonValue buildJsonSelfUri(String uriSelf) {
+	private JsonValue buildJsonSelfUri(String uriSelf) 
+    {
         return Json.createObjectBuilder()
             .add("href", uriSelf)
             .add("rel", "self")
             .build();
-	}
-
-    private JsonValue buildJsonForSandwich(Sandwich s) 
+    }
+    
+    private JsonValue buildJsonForSandwichs(Sandwich s) 
     {
         String uriSandwich = uriInfo.getBaseUriBuilder()
             .path(SandwichResource.class)
             .path(s.getId() + "")
             .build()
             .toString();
+
         JsonObject job = Json.createObjectBuilder()
             .add("href", uriSandwich)
             .add("rel", "self")
             .build();
+        
         JsonArrayBuilder links = Json.createArrayBuilder();
         links.add(job);
-        
+
         return Json.createObjectBuilder()
             .add("id", s.getId())
             .add("nom", s.getNom())
@@ -172,75 +175,75 @@ public class CategorieResource
     
     /*********************************************************************
      * 
-     * Route permettant de récupérer la liste des sandwichs d'une catégorie
+     * Route permettant de récupérer des sandwichs d'une taille
      * 
      *********************************************************************/
-
-	@GET
+    
+    @GET
     @Path("{id}/sandwichs")
-    public Response getSandwichByCategory(@PathParam("id") long id)
+    public Response getSandwichByTaille(@PathParam("id") long id)
     {
-        return Optional.ofNullable(cm.findById(id))
-            .map(c -> Response.ok(buildSandwichToCategory(c)).build())
-            .orElseThrow(() -> new CategorieNotFound("Ressource non disponible "+ uriInfo.getPath()));
+        return Optional.ofNullable(tm.findById(id))
+            .map(t -> Response.ok(buildSandwichByTaille(t)).build())
+            .orElseThrow(() -> new TailleNotFound("Ressource non disponible" + uriInfo.getPath()));
     }
 
-    private JsonObject buildSandwichToCategory(Categorie c) 
+    private JsonObject buildSandwichByTaille(Tailles t) 
     {
         JsonArrayBuilder jab = Json.createArrayBuilder();
-        c.getSandwich().forEach( s -> 
+        t.getSandwichs().forEach(s -> 
         {
-            jab.add(buildJsonForSandwich(s));
+            jab.add(buildJsonForSandwichs(s));
         });
-        
+
         return Json.createObjectBuilder()
-                .add("sandwichs", jab.build())
-                .build();
+            .add("sandwichs", jab.build())
+            .build();
     }
     
     /*********************************************************************
      * 
-     * Route permettant de créer une nouvelle catégorie
+     * Route permettant de créer une nouvelle taille
      * 
      *********************************************************************/
 
-	@POST
-    public Response newCategorie(@Valid Categorie c)
-    {
-        Categorie newOne = cm.save(c);
-        long id = newOne.getId();
-        URI uri = uriInfo.getAbsolutePathBuilder().path("/" + id).build();
+     @POST
+     public Response newTaille(@Valid Tailles t)
+     {
+         Tailles newOne = tm.save(t);
+         long id = newOne.getId();
+         URI uri = uriInfo.getAbsolutePathBuilder().path("/" + id).build();
+         
+         return Response.created(uri).build();
+     }
 
-        return Response.created(uri).build();
-    }
-
-    /*********************************************************************
+     /*********************************************************************
      * 
-     * Route permettant de supprimer une catégorie
-     * 
-     *********************************************************************/
-
-    @DELETE
-    @Path("{id}")
-    public Response suppression(@PathParam("id") long id)
-    {
-        cm.delete(id);
-
-        return Response.status(Response.Status.NO_CONTENT).build();
-    }  
-
-    /*********************************************************************
-     * 
-     * Route permettant de modifier une catégorie
+     * Route permettant de supprimer une taille
      * 
      *********************************************************************/
 
-    @PUT
-    @Path("{id}")
-    public Categorie update(@PathParam("id") long id, Categorie c)
-    {
-        c.setId(id);
+     @DELETE
+     @Path("{id}")
+     public Response suppression(@PathParam("id") long id)
+     {
+         tm.delete(id);
 
-        return cm.save(c);
-    } 
+         return Response.status(Response.Status.NO_CONTENT).build();
+     }
+
+     /*********************************************************************
+     * 
+     * Route permettant de modifier une taille
+     * 
+     *********************************************************************/
+
+     @PUT
+     @Path("{id}")
+     public Tailles update(@PathParam("id") long id, Tailles t)
+     {
+         t.setId(id);
+
+         return tm.save(t);
+     }
 }
