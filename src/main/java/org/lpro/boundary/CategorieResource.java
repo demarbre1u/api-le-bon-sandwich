@@ -41,6 +41,12 @@ public class CategorieResource
     @Context 
     UriInfo uriInfo;
     
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer la liste des catégories
+     * 
+     *********************************************************************/
+    
     @GET
     public Response getCategories() 
     {
@@ -50,7 +56,31 @@ public class CategorieResource
                 .build();
         return Response.ok(json).build();
     }
+
+    private JsonArray getCategorieList() 
+    {
+        JsonArrayBuilder jab = Json.createArrayBuilder();
+        this.cm.findAll().forEach((c) -> {
+            jab.add(buildJson(c));
+        });
+        return jab.build();
+    }
+
+    private JsonObject buildJson(Categorie c) 
+    {
+        return Json.createObjectBuilder()
+                .add("id",c.getId())
+                .add("nom", c.getNom())
+                .add("desc", c.getDescription())
+                .build();
+    }
     
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer les détails d'une catégorie
+     * 
+     *********************************************************************/
+
     @GET
     @Path("{id}")
     public Response getOneCategorie(@PathParam("id") long id) 
@@ -115,56 +145,6 @@ public class CategorieResource
             .build();
 	}
 
-	@GET
-    @Path("{id}/sandwichs")
-    public Response getSandwichByCategory(@PathParam("id") long id)
-    {
-        return Optional.ofNullable(cm.findById(id))
-            .map(c -> Response.ok(buildSandwichToCategory(c)).build())
-            .orElseThrow(() -> new CategorieNotFound("Ressource non disponible "+ uriInfo.getPath()));
-    }
-
-	@POST
-    public Response newCategorie(@Valid Categorie c)
-    {
-        Categorie newOne = cm.save(c);
-        long id = newOne.getId();
-        URI uri = uriInfo.getAbsolutePathBuilder().path("/" + id).build();
-
-        return Response.created(uri).build();
-    }
-
-    @DELETE
-    @Path("{id}")
-    public Response suppression(@PathParam("id") long id)
-    {
-        cm.delete(id);
-
-        return Response.status(Response.Status.NO_CONTENT).build();
-    }  
-
-    @PUT
-    @Path("{id}")
-    public Categorie update(@PathParam("id") long id, Categorie c)
-    {
-        c.setId(id);
-
-        return cm.save(c);
-    } 
-
-    private JsonObject buildSandwichToCategory(Categorie c) 
-    {
-        JsonArrayBuilder jab = Json.createArrayBuilder();
-        c.getSandwich().forEach( s -> 
-        {
-            jab.add(buildJsonForSandwich(s));
-        });
-        
-        return Json.createObjectBuilder()
-                .add("sandwichs", jab.build())
-                .build();
-	}
-    
     private JsonValue buildJsonForSandwich(Sandwich s) 
     {
         String uriSandwich = uriInfo.getBaseUriBuilder()
@@ -187,23 +167,79 @@ public class CategorieResource
             .add("img", s.getImg())
             .add("links", links)
             .build();
-	}
-
-	private JsonArray getCategorieList() 
-    {
-        JsonArrayBuilder jab = Json.createArrayBuilder();
-        this.cm.findAll().forEach((c) -> {
-            jab.add(buildJson(c));
-        });
-        return jab.build();
     }
     
-    private JsonObject buildJson(Categorie c) 
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer la liste des sandwichs d'une catégorie
+     * 
+     *********************************************************************/
+
+	@GET
+    @Path("{id}/sandwichs")
+    public Response getSandwichByCategory(@PathParam("id") long id)
     {
+        return Optional.ofNullable(cm.findById(id))
+            .map(c -> Response.ok(buildSandwichToCategory(c)).build())
+            .orElseThrow(() -> new CategorieNotFound("Ressource non disponible "+ uriInfo.getPath()));
+    }
+
+    private JsonObject buildSandwichToCategory(Categorie c) 
+    {
+        JsonArrayBuilder jab = Json.createArrayBuilder();
+        c.getSandwich().forEach( s -> 
+        {
+            jab.add(buildJsonForSandwich(s));
+        });
+        
         return Json.createObjectBuilder()
-                .add("id",c.getId())
-                .add("nom", c.getNom())
-                .add("desc", c.getDescription())
+                .add("sandwichs", jab.build())
                 .build();
     }
+    
+    /*********************************************************************
+     * 
+     * Route permettant de créer une nouvelle catégorie
+     * 
+     *********************************************************************/
+
+	@POST
+    public Response newCategorie(@Valid Categorie c)
+    {
+        Categorie newOne = cm.save(c);
+        long id = newOne.getId();
+        URI uri = uriInfo.getAbsolutePathBuilder().path("/" + id).build();
+
+        return Response.created(uri).build();
+    }
+
+    /*********************************************************************
+     * 
+     * Route permettant de supprimer une catégorie
+     * 
+     *********************************************************************/
+
+    @DELETE
+    @Path("{id}")
+    public Response suppression(@PathParam("id") long id)
+    {
+        cm.delete(id);
+
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }  
+
+    /*********************************************************************
+     * 
+     * Route permettant de modifier une catégorie
+     * 
+     *********************************************************************/
+
+    @PUT
+    @Path("{id}")
+    public Categorie update(@PathParam("id") long id, Categorie c)
+    {
+        c.setId(id);
+
+        return cm.save(c);
+    } 
 }

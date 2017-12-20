@@ -43,6 +43,12 @@ public class SandwichResource
     @Context
     UriInfo uriInfo;
 
+    /********************************************************************
+     * 
+     * Route permettant de récupérer la liste des sandwichs
+     * 
+     *********************************************************************/
+
     @GET
     public Response getSandwichs(@QueryParam("type") String ptype, 
                                 @QueryParam("img") String img,
@@ -81,6 +87,32 @@ public class SandwichResource
         
 		return jab.build();
     }
+
+    private JsonValue buildJson(Sandwich s) 
+    {
+        return Json.createObjectBuilder()
+                .add("id", s.getId())
+                .add("nom", s.getNom())
+                .add("type_pain", s.getType())
+                .add("links", buildJsonLink(s.getId()))
+                .build();
+    }
+    
+    private JsonValue buildJsonLink(long id) 
+    {
+        return Json.createObjectBuilder()
+                .add("self", Json.createObjectBuilder()
+                            .add("href", "/sandwichs/" + id + "/")
+                            .build())
+                .build();
+
+    }
+    
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer les détails d'un sandwich
+     * 
+     *********************************************************************/
     
     @GET
     @Path("{id}")
@@ -91,6 +123,70 @@ public class SandwichResource
                 .orElseThrow(() -> new SandwichNotFound("Ressource non disponible " + uriInfo.getPath()));
     }
 
+    private Object buildJsonSandwich(Sandwich s) 
+    {
+        JsonArrayBuilder categs = Json.createArrayBuilder();
+        s.getCategorie().forEach( c ->
+        {
+            categs.add(buildJsonCategs(c));
+        });
+
+        JsonArrayBuilder tailles = Json.createArrayBuilder();
+        s.getTailles().forEach( t -> 
+        {
+            tailles.add(buildJsonTailles(t));
+        });
+
+        return Json.createObjectBuilder()
+            .add("id", s.getId())
+            .add("nom", s.getNom())
+            .add("desc", s.getDescription())
+            .add("type_pain", s.getType())
+            .add("img", s.getImg())
+            .add("categories", categs.build())
+            .add("tailles", tailles.build())
+            .add("links", buildHATEOSLinks(s))
+            .build();
+    }
+    
+    private JsonValue buildJsonCategs(Categorie c) 
+    {
+        return Json.createObjectBuilder()
+            .add("id", c.getId())
+            .add("nom", c.getNom())
+            .add("desc", c.getDescription())
+            .build();
+    }
+    
+    private JsonValue buildJsonTailles(Tailles t) 
+    {
+        return Json.createObjectBuilder()
+            .add("id", t.getId())
+            .add("nom", t.getNom())
+            .add("prix", t.getPrix())
+            .build();
+    }
+    
+    private JsonValue buildHATEOSLinks(Sandwich s) 
+    {
+        JsonObjectBuilder categs = Json.createObjectBuilder()
+            .add("href", uriInfo.getPath() + "/categories/");
+
+        JsonObjectBuilder tailles = Json.createObjectBuilder()
+            .add("href", uriInfo.getPath() + "/tailles/");
+
+        return Json.createObjectBuilder()
+            .add("categories", categs.build())
+            .add("tailles", tailles.build())
+            .build();
+	}
+
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer la liste des catégories d'un sadnwich
+     * 
+     *********************************************************************/
+
     @GET
     @Path("{id}/categories")
     public Response getCategoriesBySandwich(@PathParam("id") long id)
@@ -99,18 +195,6 @@ public class SandwichResource
             .map(s -> Response.ok(buildCategoryToSandwich(s)).build())
             .orElseThrow( () -> new SandwichNotFound("Ressource non disponible " + uriInfo.getPath()));
     }
-
-    /*
-
-    TODO
-    
-    @GET
-    @Path("{id}/tailles")
-    public Response getTaillesBySandwich(@PathParam("id") long id)
-    {
-
-    }
-    */
 
     private JsonObject buildCategoryToSandwich(Sandwich s)
     {
@@ -149,63 +233,29 @@ public class SandwichResource
             .build();
 	}
 
-	private Object buildJsonSandwich(Sandwich s) 
-    {
-        JsonArrayBuilder categs = Json.createArrayBuilder();
-        s.getCategorie().forEach( c ->
-        {
-            categs.add(buildJsonCategs(c));
-        });
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer la liste des tailles d'un sadnwich
+     * 
+     *********************************************************************/
 
-        JsonArrayBuilder tailles = Json.createArrayBuilder();
-        s.getTailles().forEach( t -> 
-        {
-            tailles.add(buildJsonTailles(t));
-        });
+    /*
 
-        return Json.createObjectBuilder()
-            .add("id", s.getId())
-            .add("nom", s.getNom())
-            .add("desc", s.getDescription())
-            .add("type_pain", s.getType())
-            .add("img", s.getImg())
-            .add("categories", categs.build())
-            .add("tailles", tailles.build())
-            .add("links", buildHATEOSLinks(s))
-            .build();
-	}
-
-	private JsonValue buildHATEOSLinks(Sandwich s) 
-    {
-        JsonObjectBuilder categs = Json.createObjectBuilder()
-            .add("href", uriInfo.getPath() + "/categories/");
-
-        JsonObjectBuilder tailles = Json.createObjectBuilder()
-            .add("href", uriInfo.getPath() + "/tailles/");
-
-        return Json.createObjectBuilder()
-            .add("categories", categs.build())
-            .add("tailles", tailles.build())
-            .build();
-	}
-
-	private JsonValue buildJsonCategs(Categorie c) 
-    {
-        return Json.createObjectBuilder()
-            .add("id", c.getId())
-            .add("nom", c.getNom())
-            .add("desc", c.getDescription())
-            .build();
-    }
+    TODO
     
-    private JsonValue buildJsonTailles(Tailles t) 
+    @GET
+    @Path("{id}/tailles")
+    public Response getTaillesBySandwich(@PathParam("id") long id)
     {
-        return Json.createObjectBuilder()
-            .add("id", t.getId())
-            .add("nom", t.getNom())
-            .add("prix", t.getPrix())
-            .build();
-	}
+
+    }
+    */
+
+    /*********************************************************************
+     * 
+     * Route permettant de créer un nouveau sandwich
+     * 
+     *********************************************************************/
 
 	@POST
     public Response newSandwich(@Valid Sandwich s, @Context UriInfo uriInfo)
@@ -217,6 +267,12 @@ public class SandwichResource
         return Response.created(uri).build();
     }
 
+    /*********************************************************************
+     * 
+     * Route permettant de supprimer un sandwich
+     * 
+     *********************************************************************/
+
     @DELETE
     @Path("{id}")
     public Response suppression(@PathParam("id") long id)
@@ -226,6 +282,12 @@ public class SandwichResource
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
+    /*********************************************************************
+     * 
+     * Route permettant de modifier un sandwich
+     * 
+     *********************************************************************/
+
     @PUT
     @Path("{id}")
     public Sandwich update(@PathParam ("id") long id, Sandwich s)
@@ -234,24 +296,4 @@ public class SandwichResource
 
         return sm.save(s);
     }
-
-    private JsonValue buildJson(Sandwich s) 
-    {
-        return Json.createObjectBuilder()
-                .add("id", s.getId())
-                .add("nom", s.getNom())
-                .add("type_pain", s.getType())
-                .add("links", buildJsonLink(s.getId()))
-                .build();
-	}
-
-    private JsonValue buildJsonLink(long id) 
-    {
-        return Json.createObjectBuilder()
-                .add("self", Json.createObjectBuilder()
-                            .add("href", "/sandwichs/" + id + "/")
-                            .build())
-                .build();
-
-	}
 }
