@@ -2,7 +2,7 @@
 
 ## A propos
 
-Ce projet regroupe Les TD 1 à 4 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018.
+Ce projet regroupe Les TD 1 à 6 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018.
 
 ## Comment faire fonctionner le projet
 
