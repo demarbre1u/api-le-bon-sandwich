@@ -65,6 +65,8 @@ Changer de taille ET de page : localhost:8080/projet/api/sandwichs?page=2&size=5
 
 Liste des catégories d'un sandwich : localhost:8080/projet/api/sandwichs/1/categories (GET)
 
+Liste des tailles d'un sandwich : localhost:8080/projet/api/sandwichs/1/tailles (GET)
+
 ### Les tailles
 
 Consulter la liste des tailles : localhost:8080/projet/api/tailles (GET)
