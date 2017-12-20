@@ -2,7 +2,7 @@
 
 ## A propos
 
-Ce projet regroupe Les TD 1 à 4 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018.
+Ce projet regroupe Les TD 1 à 6 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018.
 
 ## Comment faire fonctionner le projet
 
@@ -64,6 +64,20 @@ Changer de taille : localhost:8080/projet/api/sandwichs&size=50 (GET)
 Changer de taille ET de page : localhost:8080/projet/api/sandwichs?page=2&size=50 (GET)
 
 Liste des catégories d'un sandwich : localhost:8080/projet/api/sandwichs/1/categories (GET)
+
+### Les tailles
+
+Consulter la liste des tailles : localhost:8080/projet/api/tailles (GET)
+
+Consulter une taille en particulier : localhost:8080/projet/api/tailles/1 (GET)
+
+Consulter la liste des sandwichs d'une taille : localhost:8080/projet/api/tailles/1/sandwichs (GET)
+
+Ajouter une taille : localhost:8080/projet/api/tailles (POST)
+
+Supprimer une taille : localhost:8080/projet/api/tailles/1 (DELETE)
+
+Modifier une taille : localhost:8080/projet/api/tailles/1 (PUT)
 
 ### Les commandes
 
