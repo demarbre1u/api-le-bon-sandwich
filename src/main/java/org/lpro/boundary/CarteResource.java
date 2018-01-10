@@ -1,6 +1,9 @@
 package org.lpro.boundary;
 
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.NotAuthorizedException;
@@ -12,7 +15,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.lpro.control.KeyManagement;
-import org.lpro.control.PasswordManagement;
 import org.lpro.entity.Utilisateurs;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -61,8 +63,11 @@ public class CarteResource
 
             String token = issueToken(nom, id);
             
+            JsonObject json = Json.createObjectBuilder()
+                .add("token", token)
+                .build();
 
-            return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();            
+            return Response.ok(json).build();            
         }
         catch(Exception e)
         {
