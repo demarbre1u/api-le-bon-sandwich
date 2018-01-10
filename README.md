@@ -84,3 +84,7 @@ Modifier une taille : localhost:8080/projet/api/tailles/1 (PUT)
 Créer une commande : localhost:8080/projet/api/commandes/ (POST)
 
 Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU__ localhost:8080/projet/api/commandes/id avec X-lbs-token=token dans le Header de la requête (GET)
+
+### Les utilisateurs
+
+Créer un utilisateur : localhost:8080/projet/api/utilisateurs (POST) 
