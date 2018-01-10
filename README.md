@@ -2,7 +2,7 @@
 
 ## A propos
 
-Ce projet regroupe Les TD 1 à 6 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018.
+Ce projet regroupe Les TD 1 à 7 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018.
 
 ## Comment faire fonctionner le projet
 
@@ -89,8 +89,10 @@ Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU
 
 ### Les utilisateurs
 
-Créer un utilisateur : localhost:8080/projet/api/utilisateurs (POST) 
+Créer un utilisateur : localhost:8080/projet/api/users (POST) 
 
 ### Les cartes
 
-S'authentifier pour récupérer le token d'une carte : localhost:8080/projet/api/cartes/1/auth (POST)
+Consulter une carte : localhost:8080/projet/api/cartes/1 (GET) avec le token récupérer lors de l'authentifiation dans le champs __Authorization : Bearer [token]__
+Créer une nouvelle carte : localhost:8080/projet/api/cartes (POST)
+S'authentifier pour récupérer le token d'une carte : localhost:8080/projet/api/cartes/1/auth (POST), avec Auth Basic
