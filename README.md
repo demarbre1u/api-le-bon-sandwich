@@ -94,5 +94,7 @@ Créer un utilisateur : localhost:8080/projet/api/users (POST)
 ### Les cartes
 
 Consulter une carte : localhost:8080/projet/api/cartes/1 (GET) avec le token récupérer lors de l'authentifiation dans le champs __Authorization : Bearer [token]__
+
 Créer une nouvelle carte : localhost:8080/projet/api/cartes (POST)
-S'authentifier pour récupérer le token d'une carte : localhost:8080/projet/api/cartes/1/auth (POST), avec Auth Basic
+
+S'authentifier pour récupérer le token d'une carte : localhost:8080/projet/api/cartes/1/auth (POST), avec __Auth Basic__
