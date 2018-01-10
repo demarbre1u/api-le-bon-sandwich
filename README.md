@@ -88,3 +88,7 @@ Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU
 ### Les utilisateurs
 
 Créer un utilisateur : localhost:8080/projet/api/utilisateurs (POST) 
+
+### Les cartes
+
+S'authentifier pour récupérer le token d'une carte : localhost:8080/projet/api/cartes/1/auth (POST)
