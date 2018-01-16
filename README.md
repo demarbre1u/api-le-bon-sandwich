@@ -85,6 +85,8 @@ Modifier une taille : localhost:8080/projet/api/tailles/1 (PUT)
 
 Créer une commande : localhost:8080/projet/api/commandes/ (POST)
 
+Créer une commande fidélisée : localhost:8080/projet/api/commandes?card=uicartes (POST) avec __Authorization__ : _Bearer token_ dans le header
+
 Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU__ localhost:8080/projet/api/commandes/id avec X-lbs-token=token dans le Header de la requête (GET)
 
 ### Les utilisateurs
