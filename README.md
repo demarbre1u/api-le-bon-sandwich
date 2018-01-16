@@ -91,9 +91,9 @@ Créer une commande fidélisée : localhost:8080/projet/api/commandes?card=uidCa
 
 Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU__ localhost:8080/projet/api/commandes/id avec __X-lbs-token=[token]__ dans le Header de la requête (GET)
 
-Modifier la date de livraison d'une commande : localhost:8080/projet/api/commandes/uidCommande avec __date = [date]__ et __heure = [heure]__ dans le Header
+Modifier la date de livraison d'une commande : localhost:8080/projet/api/commandes/uidCommande (PUT) avec __date = [date]__ et __heure = [heure]__ dans le Header
 
-Payer une commande (non payée) : localhost:8080/projet/api/commandes/uidCommande avec __numCarte = [numCarte]__ (16 chiffres) et __dateExpiration = [dateExpiration]__ (date au format 01/18) dans le Header
+Payer une commande (non payée) : localhost:8080/projet/api/commandes/uidCommande (POST) avec __numCarte = [numCarte]__ (16 chiffres) et __dateExpiration = [dateExpiration]__ (date au format 01/18) dans le Header
 
 ### Les utilisateurs
 
