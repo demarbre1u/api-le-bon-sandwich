@@ -21,6 +21,7 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -78,6 +79,32 @@ public class CommandeRepresentation
             return Response.status(Response.Status.FORBIDDEN).build();
         else    
             return Response.ok(buildCommandeObject(cmd)).build();
+    }
+
+    private JsonObject buildCommandeObject(Commande c) 
+    {
+        return Json.createObjectBuilder()
+                .add("commande", buildJsonForCommande(c))
+                .build();
+    }
+
+    private JsonObject buildJsonForCommande(Commande c) 
+    {
+        return Json.createObjectBuilder()
+                .add("id", c.getId())
+                .add("nom_client", c.getNom())
+                .add("mail_client", c.getMail())
+                .add("livraison", buildJsonForLivraison(c))
+                .add("token", c.getToken())
+                .build();
+    }
+
+    private JsonObject buildJsonForLivraison(Commande c) 
+    {
+        return Json.createObjectBuilder()
+                .add("date", c.getDateLivraison())
+                .add("heure", c.getHeureLivraison())
+                .build();
     }
 
     /*********************************************************************
@@ -143,29 +170,49 @@ public class CommandeRepresentation
                 .build();
     }
 
-    private JsonObject buildCommandeObject(Commande c) 
-    {
-        return Json.createObjectBuilder()
-                .add("commande", buildJsonForCommande(c))
-                .build();
-    }
+    /*********************************************************************
+     * 
+     * Route permettant de modifier la date de livraison d'une commande
+     * 
+     *********************************************************************/
 
-    private JsonObject buildJsonForCommande(Commande c) 
+    @PUT
+    @Path("/{id}")
+    public Response changeCommandeDate(@PathParam("id") String uid, @DefaultValue("") @HeaderParam("date") String date, @DefaultValue("") @HeaderParam("heure") String heure)
     {
-        return Json.createObjectBuilder()
-                .add("id", c.getId())
-                .add("nom_client", c.getNom())
-                .add("mail_client", c.getMail())
-                .add("livraison", buildJsonForLivraison(c))
-                .add("token", c.getToken())
-                .build();
-    }
+        Commande commande = commandeRessource.findById(uid);
+        if(commande == null) return Response.status(Response.Status.BAD_REQUEST).build();
 
-    private JsonObject buildJsonForLivraison(Commande c) 
-    {
-        return Json.createObjectBuilder()
-                .add("date", c.getDateLivraison())
-                .add("heure", c.getHeureLivraison())
-                .build();
+        TimeZone tz = TimeZone.getTimeZone("Europe/Paris");
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        format.setTimeZone(tz);
+
+        String newDateRaw = date + " " + heure;
+        
+        Date newDateParsed;
+
+        try 
+        {
+            newDateParsed = format.parse(newDateRaw);
+        } 
+        catch (ParseException e) 
+        {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        Date currentDate = new Date();
+
+        if(newDateParsed.compareTo(currentDate) <= 0)
+        {
+            // Si la date précisée précède la date courante 
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        commande.setDateLivraison(date);
+        commande.setHeureLivraison(heure);
+        
+        URI uri = uriInfo.getAbsolutePathBuilder().build();
+
+        return Response.ok().header("Location", uri).build();
     }
 }
