@@ -10,7 +10,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -30,6 +31,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import org.eclipse.persistence.jpa.jpql.parser.RegexpExpression;
 import org.lpro.control.KeyManagement;
 import org.lpro.entity.Carte;
 import org.lpro.entity.Commande;
@@ -177,7 +180,7 @@ public class CommandeRepresentation
      *********************************************************************/
 
     @PUT
-    @Path("/{id}")
+    @Path("{id}")
     public Response changeCommandeDate(@PathParam("id") String uid, @DefaultValue("") @HeaderParam("date") String date, @DefaultValue("") @HeaderParam("heure") String heure)
     {
         Commande commande = commandeRessource.findById(uid);
@@ -213,6 +216,61 @@ public class CommandeRepresentation
         
         URI uri = uriInfo.getAbsolutePathBuilder().build();
 
-        return Response.ok().header("Location", uri).build();
+        return Response.ok().location(uri).build();
+    }
+
+    /*********************************************************************
+     * 
+     * Route permettant de payer une commande
+     * 
+     *********************************************************************/
+
+    @POST
+    @Path("{id}")
+    public Response payerCommande(@PathParam("id") String uid,
+        @DefaultValue("") @HeaderParam("numCarte") String numCarte,
+        @DefaultValue("") @HeaderParam("dateExpiration") String dateExpiration)
+    {
+        Commande commande = commandeRessource.findById(uid);
+        if(commande == null)
+        {
+            JsonObject json = Json.createObjectBuilder()
+                .add("error", "The specified UID doesn't exist")
+                .build();
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(json).build();
+        }
+
+        if(commande.isPayed())
+        {
+            JsonObject json = Json.createObjectBuilder()
+                .add("error", "This command has already been payed")
+                .build();
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(json).build();
+        }
+
+        Pattern patternNumCarte = Pattern.compile("\\d{16}");
+        Pattern patternDateExpi = Pattern.compile("\\d{2}/\\d{2}");
+        
+        Matcher matcherNumCarte = patternNumCarte.matcher(numCarte);
+        Matcher matcherDateExpi = patternDateExpi.matcher(dateExpiration);
+        
+        if(matcherNumCarte.find() && matcherDateExpi.find())
+        {
+            commande.setPayed(true);
+
+            URI uri = uriInfo.getAbsolutePathBuilder().build();
+            
+            return Response.ok().location(uri).build();        
+        }
+        else
+        {
+            JsonObject json = Json.createObjectBuilder()
+                .add("error", "numCarte or dateExpiration isn't valid")
+                .build();
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(json).build();
+        }
     }
 }

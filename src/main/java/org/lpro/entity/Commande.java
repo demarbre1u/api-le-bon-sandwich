@@ -20,6 +20,7 @@ public class Commande implements Serializable
     private String dateLivraison;
     private String heureLivraison;
     private String token;
+    private boolean payed;
     
     @ManyToOne(fetch=FetchType.LAZY)
     private Carte carte;
@@ -32,6 +33,7 @@ public class Commande implements Serializable
         this.mail = mail;
         this.dateLivraison = dateLivraison;
         this.heureLivraison = heureLivraison;
+        this.payed = false;
     }
 
     public String getId() 
@@ -52,6 +54,16 @@ public class Commande implements Serializable
     public Carte getCarte() 
     {
         return carte;
+    }
+
+    public boolean isPayed() 
+    {
+        return payed;
+    }
+
+    public void setPayed(boolean payed) 
+    {
+        this.payed = payed;
     }
 
     public void setCarte(Carte carte) 
