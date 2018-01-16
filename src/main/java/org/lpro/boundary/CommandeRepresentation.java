@@ -1,6 +1,10 @@
 package org.lpro.boundary;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import java.net.URI;
+import java.security.Key;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +29,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import org.lpro.control.KeyManagement;
+import org.lpro.entity.Carte;
 import org.lpro.entity.Commande;
 
 @Stateless
@@ -35,8 +41,21 @@ public class CommandeRepresentation
 {
     @Inject
     CommandeRessource commandeRessource;
+
+    @Inject
+    CarteManager cm;
+
+    @Inject 
+    KeyManagement keyManagement;
+
     @Context
     UriInfo uriInfo;
+
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer les informations d'une commande
+     * 
+     *********************************************************************/
 
     @GET
     @Path("/{commandeId}")
@@ -61,8 +80,14 @@ public class CommandeRepresentation
             return Response.ok(buildCommandeObject(cmd)).build();
     }
 
+    /*********************************************************************
+     * 
+     * Route permettant de créer une nouvelle commande
+     * 
+     *********************************************************************/
+
     @POST
-    public Response addCommande(@Valid Commande commande)
+    public Response addCommande(@Valid Commande commande, @DefaultValue("") @QueryParam("card") String cardId, @DefaultValue("") @HeaderParam("Authorization") String bearer)
     {
         String date = commande.getDateLivraison() + " " + commande.getHeureLivraison();
         TimeZone tz = TimeZone.getTimeZone("Europe/Paris");
@@ -88,6 +113,28 @@ public class CommandeRepresentation
             // Si la date précisée précède la date courante 
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
+
+        // Si il y a un token bearer
+        if(!bearer.isEmpty() && bearer.startsWith("Bearer "))
+        {
+            // On le parse
+            String token = bearer.substring("Bearer".length()).trim();
+            
+            try
+            {
+                Key key = keyManagement.generateKey();
+                Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+                String tokenCardId = (String) claims.getBody().get("carte");
+
+                if(tokenCardId.equals(cardId))
+                {
+                    Carte c = cm.findById(tokenCardId);
+                    commande.setCarte(c);
+                }
+            }
+            catch(Exception e) {}
+        }
+            
 
         Commande newCommande = this.commandeRessource.save(commande);
         URI uri = uriInfo.getAbsolutePathBuilder().path(newCommande.getId()).build();
