@@ -2,7 +2,9 @@
 
 ## A propos
 
-Ce projet regroupe Les TD 1 à 7 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018.
+Ce projet regroupe les TD 1 à 7 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018, et plus.
+
+L'API mise à disposition dans ce projet est CORS compliant.
 
 ## Comment faire fonctionner le projet
 
