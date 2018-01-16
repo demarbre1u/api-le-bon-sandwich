@@ -93,6 +93,8 @@ Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU
 
 Modifier la date de livraison d'une commande : localhost:8080/projet/api/commandes/uidCommande avec __date = [date]__ et __heure = [heure]__ dans le Header
 
+Payer une commande (non payée) : localhost:8080/projet/api/commandes/uidCommande avec __numCarte = [numCarte]__ (16 chiffres) et __dateExpiration = [dateExpiration]__ (date au format 01/18) dans le Header
+
 ### Les utilisateurs
 
 Créer un utilisateur : localhost:8080/projet/api/users (POST) 
