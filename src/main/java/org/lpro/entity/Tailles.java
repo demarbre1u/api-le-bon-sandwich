@@ -2,6 +2,7 @@ package org.lpro.entity;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ public class Tailles implements Serializable
     @NotNull
     private float prix;
     @ManyToMany
-    private Set<Sandwich> sandwich = new HashSet<Sandwich>();
+    private List<Sandwich> sandwich;
 
     public Tailles() {}
 
@@ -32,15 +33,14 @@ public class Tailles implements Serializable
         this.id = id;
         this.nom = nom;
         this.prix = prix;
-        this.sandwich = new HashSet<>();
     }
 
-    public Set<Sandwich> getSandwichs() 
+    public List<Sandwich> getSandwichs() 
     {
         return sandwich;
     }
 
-    public void setSandwichs(Set<Sandwich> sandwichs) 
+    public void setSandwichs(List<Sandwich> sandwichs) 
     {
         this.sandwich = sandwichs;
     }

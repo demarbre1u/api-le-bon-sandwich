@@ -301,7 +301,7 @@ public class CommandeRepresentation
         // On vérifie que les uid sont bons
         boolean valide = !uidSandwich.isEmpty() && uidTaille > 0 && nbSandwich > 0;
         if(!valide)
-            return Response.status(Response.Status.BAD_REQUEST).header("Error", "param invalide").build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         
         // On vérifie que les uid correspondent à quelque chose qui existe
         Commande commande = commandeRessource.findById(uidCommande);
@@ -309,7 +309,7 @@ public class CommandeRepresentation
         Tailles taille = tm.findById(uidTaille);
 
         if(commande == null || sandwich == null || taille == null)
-            return Response.status(Response.Status.BAD_REQUEST).header("Error", "param ne correspondent à rien").build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         
         // On ajoute la taille voulu au sandwich
         sandwich.getTailles().add(taille);
@@ -373,5 +373,87 @@ public class CommandeRepresentation
             .build();
 
         return json;
+    }
+
+    /*********************************************************************
+     * 
+     * Route permettant de récupérer les détails d'une commande (private)
+     * 
+     *********************************************************************/
+
+    @GET
+    @Path("{uid}/private")
+    public Response getDetailsCommande(@PathParam("uid") String uid)
+    {
+        // On vérifie que uid correspond à une commande existante
+        Commande commande = commandeRessource.findById(uid);
+
+        if(commande == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        // On construit le json
+        JsonObject json = Json.createObjectBuilder()
+            .add("type", "ressource")
+            .add("commande", jsonCommande(commande))
+            .build();
+
+        return Response.ok(json).build();
+    }
+
+    private JsonValue jsonCommande(Commande commande) 
+    {
+        JsonObject json = Json.createObjectBuilder()
+        .add("id", commande.getId())
+        .add("nom", commande.getNom())
+        .add("mail", commande.getMail())
+        .add("date", commande.getDateLivraison())
+        .add("heure", commande.getHeureLivraison())
+        .add("payé", commande.isPayed())
+        .add("sandwichs", jsonListSandwich(commande))
+        .add("links", buildLink(commande))
+        .build();
+
+		return json;
+	}
+
+	private JsonValue jsonListSandwich(Commande commande) 
+    {
+        List<Sandwich> sandwichs = commande.getSandwich();
+
+        JsonArrayBuilder jab = Json.createArrayBuilder();
+
+        for(Sandwich s : sandwichs)
+        {
+            JsonObject json = Json.createObjectBuilder()
+                .add("id", s.getId())
+                .add("nom", s.getNom())
+                .add("description", s.getDescription())
+                .add("type", s.getType())
+                .add("tailles", jsonListTailles(s))
+                .build();
+            
+            jab.add(json);
+        }
+
+		return jab.build();
+    }
+    
+    private JsonValue jsonListTailles(Sandwich s)
+    {
+        List<Tailles> tailles = s.getTailles();
+
+        JsonArrayBuilder jab = Json.createArrayBuilder();
+
+        for(Tailles t : tailles)
+        {
+            JsonObject json = Json.createObjectBuilder()
+                .add("nom", t.getNom())
+                .add("prix", t.getPrix())
+                .build();
+
+            jab.add(json);
+        }
+
+        return jab.build();
     }
 }
