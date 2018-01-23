@@ -1,9 +1,11 @@
 package org.lpro.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -24,6 +26,8 @@ public class Commande implements Serializable
     
     @ManyToOne(fetch=FetchType.LAZY)
     private Carte carte;
+    @ManyToMany
+    private List<Sandwich> sandwich;
 
     public Commande() {}
 
@@ -44,6 +48,14 @@ public class Commande implements Serializable
     public void setId(String id) 
     {
         this.id = id;
+    }
+
+    public void setSandwich(List<Sandwich> sandwich) {
+        this.sandwich = sandwich;
+    }
+
+    public List<Sandwich> getSandwich() {
+        return sandwich;
     }
 
     public String getNom() 

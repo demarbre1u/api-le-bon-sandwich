@@ -32,10 +32,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.eclipse.persistence.jpa.jpql.parser.RegexpExpression;
 import org.lpro.control.KeyManagement;
 import org.lpro.entity.Carte;
 import org.lpro.entity.Commande;
+import org.lpro.entity.Sandwich;
+import org.lpro.entity.Tailles;
 
 @Stateless
 @Consumes(MediaType.APPLICATION_JSON)
@@ -45,6 +46,12 @@ public class CommandeRepresentation
 {
     @Inject
     CommandeRessource commandeRessource;
+
+    @Inject 
+    SandwichManager sm;
+
+    @Inject
+    TailleManager tm;
 
     @Inject
     CarteManager cm;
@@ -273,4 +280,45 @@ public class CommandeRepresentation
             return Response.status(Response.Status.BAD_REQUEST).entity(json).build();
         }
     }
+
+    /*********************************************************************
+     * 
+     * Route permettant d'ajouter un sandwich à une commande
+     * 
+     *********************************************************************/
+
+     @POST
+     @Path("{uid}/sandwich")
+     public Response addSandwich(@PathParam("uid") String uidCommande,
+         @DefaultValue("") @QueryParam("uidSandwich") String uidSandwich, 
+         @QueryParam("uidTaille") long uidTaille,
+         @QueryParam("nbSandwich") int nbSandwich) 
+     {
+        // On vérifie que les uid sont bons
+        boolean valide = !uidSandwich.isEmpty() && uidTaille > 0 && nbSandwich > 0;
+        if(!valide)
+            return Response.status(Response.Status.BAD_REQUEST).header("Error", "param invalide").build();
+        
+        // On vérifie que les uid correspondent à quelque chose qui existe
+        Commande commande = commandeRessource.findById(uidCommande);
+        Sandwich sandwich = sm.findById(uidSandwich);
+        Tailles taille = tm.findById(uidTaille);
+
+        if(commande == null || sandwich == null || taille == null)
+            return Response.status(Response.Status.BAD_REQUEST).header("Error", "param ne correspondent à rien").build();
+        
+        // On ajoute la taille voulu au sandwich
+        sandwich.getTailles().add(taille);
+
+        // On ajoute le sandwich a la commande
+        for(int i = 0 ; i < nbSandwich ; i++)
+        {
+            commande.getSandwich().add(sandwich);
+        }
+
+        URI uri = uriInfo.getBaseUriBuilder().path("/" + uidCommande).build();
+
+        return Response.ok().location(uri).build();
+     }
+
 }

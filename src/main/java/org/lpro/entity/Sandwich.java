@@ -2,6 +2,7 @@ package org.lpro.entity;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.json.JsonObject;
@@ -27,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Sandwich implements Serializable
 {
     @Id
-    private long id;
+    private String id;
     @NotNull
     private String nom;
     @NotNull
@@ -39,10 +40,12 @@ public class Sandwich implements Serializable
     private Set<Categorie> categorie = new HashSet<Categorie>();
     @ManyToMany(mappedBy="sandwich")
     private Set<Tailles> tailles = new HashSet<Tailles>();
+    @ManyToMany(mappedBy="sandwich")
+    private List<Commande> commandes;
 
     public Sandwich() {}
 
-    public Sandwich(long id, String nom, String desc, String type, String img)
+    public Sandwich(String id, String nom, String desc, String type, String img)
     {
         this.id = id;
         this.nom = nom;
@@ -63,7 +66,7 @@ public class Sandwich implements Serializable
         this.tailles = tailles;
     }
 
-    public long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -93,7 +96,7 @@ public class Sandwich implements Serializable
         this.description = description;
     }
 
-    public void setId(long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }

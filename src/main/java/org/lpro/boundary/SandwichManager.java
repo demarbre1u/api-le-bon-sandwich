@@ -48,9 +48,9 @@ public class SandwichManager
         return q.getResultList();
     }
 
-    public Sandwich findById(long id)
+    public Sandwich findById(String uidSandwich)
     {
-        return em.find(Sandwich.class, id);
+        return em.find(Sandwich.class, uidSandwich);
     }
 
     public long count()

@@ -98,7 +98,7 @@ public class SandwichResource
                 .build();
     }
     
-    private JsonValue buildJsonLink(long id) 
+    private JsonValue buildJsonLink(String id) 
     {
         return Json.createObjectBuilder()
                 .add("self", Json.createObjectBuilder()
@@ -116,7 +116,7 @@ public class SandwichResource
     
     @GET
     @Path("{id}")
-    public Response getOneSandwich(@PathParam("id") long id, @Context UriInfo uriInfo) 
+    public Response getOneSandwich(@PathParam("id") String id, @Context UriInfo uriInfo) 
     {
         return Optional.ofNullable(sm.findById(id))
                 .map(s -> Response.ok(buildJsonSandwich(s)).build())
@@ -189,7 +189,7 @@ public class SandwichResource
 
     @GET
     @Path("{id}/categories")
-    public Response getCategoriesBySandwich(@PathParam("id") long id)
+    public Response getCategoriesBySandwich(@PathParam("id") String id)
     {
         return Optional.ofNullable(sm.findById(id))
             .map(s -> Response.ok(buildCategoryToSandwich(s)).build())
@@ -241,7 +241,7 @@ public class SandwichResource
 
     @GET
     @Path("{id}/tailles")
-    public Response getTaillesBySandwich(@PathParam("id") long id)
+    public Response getTaillesBySandwich(@PathParam("id") String id)
     {
         return Optional.ofNullable(sm.findById(id))
             .map(s -> Response.ok(buildTailleBySandwich(s)).build())
@@ -295,7 +295,7 @@ public class SandwichResource
     public Response newSandwich(@Valid Sandwich s, @Context UriInfo uriInfo)
     {
         Sandwich newOne = sm.save(s);
-        long id = newOne.getId();
+        String id = newOne.getId();
         URI uri = uriInfo.getAbsolutePathBuilder().path("/" + id).build();
 
         return Response.created(uri).build();
@@ -324,7 +324,7 @@ public class SandwichResource
 
     @PUT
     @Path("{id}")
-    public Sandwich update(@PathParam ("id") long id, Sandwich s)
+    public Sandwich update(@PathParam ("id") String id, Sandwich s)
     {
         s.setId(id);
 
