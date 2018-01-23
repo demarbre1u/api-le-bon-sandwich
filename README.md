@@ -95,6 +95,8 @@ Modifier la date de livraison d'une commande : localhost:8080/projet/api/command
 
 Payer une commande (non payée) : localhost:8080/projet/api/commandes/uidCommande avec __numCarte = [numCarte]__ (16 chiffres) et __dateExpiration = [dateExpiration]__ (date au format 01/18) dans le Header
 
+Ajouter un sandwich à une commande : localhost:8080/projet/api/commandes/uidCommande/sandwich?uidSandwich=1&uidTaille=1&nbSandwich=2 (POST)
+
 ### Les utilisateurs
 
 Créer un utilisateur : localhost:8080/projet/api/users (POST) 
