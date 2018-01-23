@@ -9,13 +9,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -321,4 +325,53 @@ public class CommandeRepresentation
         return Response.ok().location(uri).build();
      }
 
+     /*********************************************************************
+     * 
+     * Route permettant de récupérer la liste des commandes (private)
+     * 
+     *********************************************************************/
+
+    @GET
+    @Path("private")
+    public Response getListCommandes() 
+    {
+        JsonObject json = Json.createObjectBuilder()
+            .add("type", "collection")
+            .add("commandes", buildCommandes())
+            .build();
+
+        return Response.ok(json).build();
+    }
+
+    private JsonValue buildCommandes() 
+    {
+        JsonArrayBuilder jab = Json.createArrayBuilder();
+
+        List<Commande> commandes = commandeRessource.findAll();
+
+        for(Commande c : commandes)
+        {
+            JsonObject json = Json.createObjectBuilder()
+                .add("id", c.getId())
+                .add("dateLivraison", c.getDateLivraison())
+                .add("heureLivraison", c.getHeureLivraison())
+                .add("links", buildLink(c))
+                .build();
+            
+            jab.add(json);
+        }
+
+		return jab.build();
+    }
+    
+    private JsonValue buildLink(Commande c)
+    {
+        URI uri = uriInfo.getBaseUriBuilder().path("/commandes/" + c.getId() + "/private").build();
+
+        JsonObject json = Json.createObjectBuilder()
+            .add("self", uri.toString())
+            .build();
+
+        return json;
+    }
 }
