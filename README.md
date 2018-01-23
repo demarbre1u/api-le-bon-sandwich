@@ -113,6 +113,8 @@ S'authentifier pour récupérer le token d'une carte : localhost:8080/projet/api
 
 ### Les commandes
 
-Liste des commandes : localhost:8080/projet/api/commandes/private
+Liste des commandes : localhost:8080/projet/api/commandes/private (GET)
 
-Détails d'une commande : local:8080/projet/api/commandes/uidCommande/private/
+Détails d'une commande : local:8080/projet/api/commandes/uidCommande/private/ (GET)
+
+Changer le status d'une commande : local:8080/projet/api/commandes/uidCommande/private (PUT)
