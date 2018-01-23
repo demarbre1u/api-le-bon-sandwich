@@ -456,4 +456,26 @@ public class CommandeRepresentation
 
         return jab.build();
     }
+
+    /*********************************************************************
+     * 
+     * Route permettant de changer l'état d'une commande (private)
+     * 
+     *********************************************************************/
+
+     @PUT
+     @Path("{uid}/private")
+     public Response changeCommandeState(@PathParam("uid") String uid) 
+     {
+        Commande commande = commandeRessource.findById(uid);
+
+        if(commande.getSandwich() == null || commande.getSandwich().isEmpty() || commande.isPayed())
+            return Response.status(Response.Status.BAD_REQUEST).build();
+     
+        commande.setPayed(true);
+        URI uri = uriInfo.getBaseUriBuilder().path("/commandes/" + uid + "/private").build();
+
+        return Response.ok().location(uri).build();
+    }
+
 }
