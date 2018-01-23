@@ -25,7 +25,7 @@ Une fois notre fichier généré, il faut le déplacer dans le bon dossier de so
 
 Une fois ceci fait, il ne reste plus qu'à tester !
 
-## Les fonctionnalités disponibles
+## Les fonctionnalités publiques disponibles
 
 ### Les catégories
 
@@ -108,3 +108,9 @@ Consulter une carte : localhost:8080/projet/api/cartes/1 (GET) avec le token ré
 Créer une nouvelle carte : localhost:8080/projet/api/cartes (POST)
 
 S'authentifier pour récupérer le token d'une carte : localhost:8080/projet/api/cartes/1/auth (POST), avec __Auth Basic__
+
+## Les fonctionnalités privées disponibles
+
+### Les commandes
+
+Liste des commandes : localhost:8080/projet/api/private/commandes
