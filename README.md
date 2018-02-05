@@ -1,5 +1,11 @@
 # API-LeBonSandwich
 
+## Auteur
+
+Allan DEMARBRE
+
+Nacera ELIAS
+
 ## A propos
 
 Ce projet regroupe les TD 1 à 7 du cours de programmation Web/Server de la LP CISIIE de l'année 2017-2018, et plus.
