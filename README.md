@@ -1,4 +1,4 @@
-# API-LeBonSandwich
+# API - Le Bon Sandwich
 
 ## Auteur
 
@@ -17,13 +17,13 @@ L'API mise à disposition dans ce projet est CORS compliant.
 Pour faire fonctionner le projet, il faut d'abord cloner le projet :
 
 ```bash
-git clone git@github.com:demarbre1u/API-LeBonSandwich.git
+git clone git@github.com:demarbre1u/api-le-bon-sandwich.git
 ```
 
 Une fois le projet cloné, on se déplace dans le repertoire, puis on construit notre fichier `.war` :
 
 ```bash
-cd API-LeBonSandwich/
+cd api-le-bon-sandwich/
 mvn clean install
 ```
 
@@ -35,92 +35,210 @@ Une fois ceci fait, il ne reste plus qu'à tester !
 
 ### Les catégories
 
-Liste des catégories : localhost:8080/projet/api/categories (GET)
+#### GET 
 
-Voir une catégorie : localhost:8080/projet/api/categories/1 (GET)
+ - Liste des catégories :
 
-Ajouter une catégorie : localhost:8080/projet/api/categories (POST)
+   > localhost:8080/projet/api/categories
 
-Modifier une catégorie : localhost:8080/projet/api/categories/1 (PUT)
+ - Voir une catégorie : 
 
-Supprimer une catégorie : localhost:8080/projet/api/categories/1 (DELETE)
+   > localhost:8080/projet/api/categories/1
 
-Liste des sandwichs d'une catégorie : localhost:8080/projet/api/categories/1/sandwichs (GET)
+ - Liste des sandwichs d'une catégorie : 
+
+   > localhost:8080/projet/api/categories/1/sandwichs
+
+#### POST 
+
+ - Ajouter une catégorie : 
+
+   > localhost:8080/projet/api/categories
+
+#### PUT
+
+ - Modifier une catégorie :
+
+   > localhost:8080/projet/api/categories/1
+
+#### DELETE 
+
+ - Supprimer une catégorie : 
+
+   > localhost:8080/projet/api/categories/1
 
 ### Les sandwichs
 
-Liste des sandwichs : localhost:8080/projet/api/sandwichs (GET)
+#### GET
 
-Voir un sandwich : localhost:8080/projet/api/sandwichs/1 (GET)
+ - Liste des sandwichs : 
 
-Ajouter un sandwich : localhost:8080/projet/api/sandwichs (POST)
+   > localhost:8080/projet/api/sandwichs
 
-Modifier un sandwich : localhost:8080/projet/api/sandwichs/1 (PUT)
+ - Voir un sandwich : 
 
-Supprimer un sandwich : localhost:8080/projet/api/sandwichs/1 (DELETE)
+   > localhost:8080/projet/api/sandwichs/1
 
-Filtrer par type de pain : localhost:8080/projet/api/sandwichs?type=baguette (GET)
+ - Filtrer par type de pain : 
 
-Filtrer par image : localhost:8080/projet/api/sandwichs?img=1 (GET)
+   > localhost:8080/projet/api/sandwichs?type=baguette
 
-Filtrer par type de pain ET image : localhost:8080/projet/api/sandwichs?type=baguette&img=1 (GET)
+ - Filtrer par image : 
 
-Changer de page : localhost:8080/projet/api/sandwichs?page=2 (GET)
+   > localhost:8080/projet/api/sandwichs?img=1
 
-Changer de taille : localhost:8080/projet/api/sandwichs&size=50 (GET)
+ - Filtrer par type de pain ET image : 
 
-Changer de taille ET de page : localhost:8080/projet/api/sandwichs?page=2&size=50 (GET)
+   > localhost:8080/projet/api/sandwichs?type=baguette&img=1
 
-Liste des catégories d'un sandwich : localhost:8080/projet/api/sandwichs/1/categories (GET)
+ - Changer de page : 
 
-Liste des tailles d'un sandwich : localhost:8080/projet/api/sandwichs/1/tailles (GET)
+   > localhost:8080/projet/api/sandwichs?page=2
+
+ - Changer de taille : 
+
+   > localhost:8080/projet/api/sandwichs&size=50
+
+ - Changer de taille ET de page : 
+
+   > localhost:8080/projet/api/sandwichs?page=2&size=50
+
+ - Liste des catégories d'un sandwich : 
+
+   > localhost:8080/projet/api/sandwichs/1/categories
+
+ - Liste des tailles d'un sandwich : 
+
+   > localhost:8080/projet/api/sandwichs/1/tailles
+
+#### POST
+
+ - Ajouter un sandwich : 
+
+   > localhost:8080/projet/api/sandwichs
+
+#### PUT
+
+ - Modifier un sandwich : 
+
+   > localhost:8080/projet/api/sandwichs/1 
+
+#### DELETE
+
+ - Supprimer un sandwich : 
+
+   > localhost:8080/projet/api/sandwichs/1
 
 ### Les tailles
 
-Consulter la liste des tailles : localhost:8080/projet/api/tailles (GET)
+#### GET
 
-Consulter une taille en particulier : localhost:8080/projet/api/tailles/1 (GET)
+ - Consulter la liste des tailles : 
 
-Consulter la liste des sandwichs d'une taille : localhost:8080/projet/api/tailles/1/sandwichs (GET)
+   > localhost:8080/projet/api/tailles
 
-Ajouter une taille : localhost:8080/projet/api/tailles (POST)
+ - Consulter une taille en particulier : 
 
-Supprimer une taille : localhost:8080/projet/api/tailles/1 (DELETE)
+   > localhost:8080/projet/api/tailles/1
 
-Modifier une taille : localhost:8080/projet/api/tailles/1 (PUT)
+ - Consulter la liste des sandwichs d'une taille : 
+
+   > localhost:8080/projet/api/tailles/1/sandwichs
+
+#### POST
+
+ - Ajouter une taille : 
+
+   > localhost:8080/projet/api/tailles
+
+#### PUT
+
+ - Modifier une taille : 
+
+   > localhost:8080/projet/api/tailles/1
+
+#### DELETE
+
+ - Supprimer une taille : 
+
+   > localhost:8080/projet/api/tailles/1
 
 ### Les commandes
 
-Créer une commande : localhost:8080/projet/api/commandes/ (POST)
+#### GET
 
-Créer une commande fidélisée : localhost:8080/projet/api/commandes?card=uidCarte (POST) avec __Authorization : Bearer [token]__ dans le header
+ - Consulter une commande : 
 
-Consulter une commande : localhost:8080/projet/api/commandes/id?token=token __OU__ localhost:8080/projet/api/commandes/id avec __X-lbs-token=[token]__ dans le Header de la requête (GET)
+   > localhost:8080/projet/api/commandes/id?token=token 
+   > 
+   > localhost:8080/projet/api/commandes/id avec __X-lbs-token=[token]__ dans le Header de la requête (GET)
 
-Modifier la date de livraison d'une commande : localhost:8080/projet/api/commandes/uidCommande (PUT) avec __date = [date]__ et __heure = [heure]__ dans le Header
+#### POST
 
-Payer une commande (non payée) : localhost:8080/projet/api/commandes/uidCommande (POST) avec __numCarte = [numCarte]__ (16 chiffres) et __dateExpiration = [dateExpiration]__ (date au format 01/18) dans le Header
+ - Créer une commande : 
 
-Ajouter un sandwich à une commande : localhost:8080/projet/api/commandes/uidCommande/sandwich?uidSandwich=1&uidTaille=1&nbSandwich=2 (POST)
+   > localhost:8080/projet/api/commandes/
+
+ - Créer une commande fidélisée : 
+
+   > localhost:8080/projet/api/commandes?card=uidCarte avec __Authorization : Bearer [token]__ dans le header
+
+ - Payer une commande (non payée) : 
+
+   > localhost:8080/projet/api/commandes/uidCommande (POST) avec __numCarte = [numCarte]__ (16 chiffres) et __dateExpiration = [dateExpiration]__ (date au format 01/18) dans le Header
+
+ - Ajouter un sandwich à une commande : 
+
+   > localhost:8080/projet/api/commandes/uidCommande/sandwich?uidSandwich=1&uidTaille=1&nbSandwich=2
+
+#### PUT
+
+ - Modifier la date de livraison d'une commande : 
+
+   > localhost:8080/projet/api/commandes/uidCommande avec __date = [date]__ et __heure = [heure]__ dans le Header
 
 ### Les utilisateurs
 
-Créer un utilisateur : localhost:8080/projet/api/users (POST) 
+#### POST
+
+ - Créer un utilisateur : 
+
+   > localhost:8080/projet/api/users (POST) 
 
 ### Les cartes
 
-Consulter une carte : localhost:8080/projet/api/cartes/1 (GET) avec le token récupérer lors de l'authentifiation dans le champs __Authorization : Bearer [token]__
+#### GET
 
-Créer une nouvelle carte : localhost:8080/projet/api/cartes (POST)
+ - Consulter une carte : 
 
-S'authentifier pour récupérer le token d'une carte : localhost:8080/projet/api/cartes/1/auth (POST), avec __Auth Basic__
+   > localhost:8080/projet/api/cartes/1 avec le token récupérer lors de l'authentifiation dans le champs __Authorization : Bearer [token]__
+
+#### POST
+
+ - Créer une nouvelle carte : 
+
+   > localhost:8080/projet/api/cartes
+
+ - S'authentifier pour récupérer le token d'une carte : 
+
+   > localhost:8080/projet/api/cartes/1/auth avec __Auth Basic__
 
 ## Les fonctionnalités privées disponibles
 
 ### Les commandes
 
-Liste des commandes : localhost:8080/projet/api/commandes/private (GET)
+#### GET
 
-Détails d'une commande : local:8080/projet/api/commandes/uidCommande/private/ (GET)
+ - Liste des commandes : 
 
-Changer le status d'une commande : local:8080/projet/api/commandes/uidCommande/private (PUT)
+   > localhost:8080/projet/api/commandes/private
+
+ - Détails d'une commande : 
+
+   > local:8080/projet/api/commandes/uidCommande/private/
+
+#### PUT
+
+ - Changer le status d'une commande : 
+
+   > local:8080/projet/api/commandes/uidCommande/private
